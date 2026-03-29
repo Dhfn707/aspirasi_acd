@@ -76,7 +76,12 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        session()->flush();
+        // Invalidate session (hapus semua session data)
+        $request->session()->invalidate();
+
+        // Regenerate CSRF token untuk keamanan
+        $request->session()->regenerateToken();
+
         return redirect()->route('login')->with('success', 'Berhasil logout');
     }
 }
