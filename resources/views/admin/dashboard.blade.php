@@ -65,14 +65,14 @@
             <div class="card-body">
                 <form method="GET" action="{{ route('admin.dashboard') }}" class="row g-3">
                     <!-- Search -->
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="search" class="form-label fw-bold">Cari Aspirasi</label>
                         <input type="text" class="form-control" id="search" name="search"
                                placeholder="Ketik kata kunci..." value="{{ request('search') }}">
                     </div>
 
                     <!-- Filter Prioritas -->
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <label for="prioritas" class="form-label fw-bold">Prioritas</label>
                         <select class="form-select" id="prioritas" name="prioritas">
                             <option value="">-- Semua Prioritas --</option>
@@ -84,7 +84,7 @@
                     </div>
 
                     <!-- Filter Hari -->
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label for="hari" class="form-label fw-bold">Hari</label>
                         <select class="form-select" id="hari" name="hari">
                             <option value="">-- Semua Hari --</option>
@@ -97,7 +97,7 @@
                     </div>
 
                     <!-- Filter Bulan -->
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label for="bulan" class="form-label fw-bold">Bulan</label>
                         <select class="form-select" id="bulan" name="bulan">
                             <option value="">-- Semua Bulan --</option>
@@ -163,7 +163,7 @@
                                             <strong>{{ $aspirasi->user->name ?? 'N/A' }}</strong><br>
                                             <small class="text-muted">{{ $aspirasi->user->email ?? 'N/A' }}</small><br>
                                             <small class="text-muted">
-                                                <i class="fas fa-briefcase"></i> {{ $aspirasi->jabatan->nama ?? 'N/A' }}
+                                                <i class="fas fa-briefcase"></i> {{ $aspirasi->user->jabatan->nama ?? 'N/A' }}
                                             </small>
                                         </td>
                                         <td>

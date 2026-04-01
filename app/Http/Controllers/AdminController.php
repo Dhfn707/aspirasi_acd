@@ -18,15 +18,12 @@ class AdminController extends Controller
         $dibaca = Aspirasi::where('status', 'Dibaca')->count();
         $ditanggapi = Aspirasi::where('status', 'Ditanggapi')->count();
         $selesai = Aspirasi::where('status', 'Selesai')->count();
-
         // Build query for aspirasi list
         $query = Aspirasi::query();
-
         // Filter by prioritas
         if ($request->filled('prioritas')) {
             $query->where('prioritas', $request->input('prioritas'));
         }
-
         // Filter by hari
         if ($request->filled('hari')) {
             $day = intval($request->input('hari'));
@@ -34,7 +31,6 @@ class AdminController extends Controller
                 $query->whereDay('created_at', $day);
             }
         }
-
         // Filter by bulan
         if ($request->filled('bulan')) {
             $month = intval($request->input('bulan'));
@@ -42,15 +38,13 @@ class AdminController extends Controller
                 $query->whereMonth('created_at', $month);
             }
         }
-
         // Search by keyword (aspirasi content)
         if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where('aspirasi', 'like', '%' . $search . '%');
         }
-
         // Get paginated results
-        $aspirasis = $query->with(['user', 'jabatan'])
+        $aspirasis = $query->with('user.jabatan')
                           ->orderBy('created_at', 'desc')
                           ->paginate(10)
                           ->withQueryString();
@@ -63,7 +57,7 @@ class AdminController extends Controller
      */
     public function show($id)
     {
-        $aspirasi = Aspirasi::with(['user', 'jabatan'])->findOrFail($id);
+        $aspirasi = Aspirasi::with('user.jabatan')->findOrFail($id);
 
         // Auto-update status to Dibaca if still Belum Dibaca
         if ($aspirasi->status === 'Belum Dibaca') {

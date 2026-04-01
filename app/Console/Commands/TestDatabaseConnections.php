@@ -4,7 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\User;
-use App\Models\Jabatan;
+use App\Models\JabatanAbsen;
 use App\Models\Aspirasi;
 
 class TestDatabaseConnections extends Command
@@ -45,7 +45,7 @@ class TestDatabaseConnections extends Command
         }
 
         $this->info("\n=== Testing Jabatan Model (from absen_karyawan) ===");
-        $jabatan = Jabatan::first();
+        $jabatan = JabatanAbsen::first();
         if ($jabatan) {
             $this->info("✓ Jabatan retrieved successfully!");
             $this->line("  Connection: " . $jabatan->getConnectionName());

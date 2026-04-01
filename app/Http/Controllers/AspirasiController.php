@@ -15,6 +15,8 @@ class AspirasiController extends Controller
     {
         $query = Aspirasi::query();
 
+        // Only show aspirations belonging to current user
+        $query->where('user_id', session('user_id'));
         // Don't show Selesai status to karyawan
         $query->where('status', '!=', 'Selesai');
 
@@ -22,7 +24,6 @@ class AspirasiController extends Controller
         if ($request->filled('prioritas')) {
             $query->where('prioritas', $request->input('prioritas'));
         }
-
         // Filter by hari
         if ($request->filled('hari')) {
             $day = intval($request->input('hari'));
@@ -30,7 +31,6 @@ class AspirasiController extends Controller
                 $query->whereDay('created_at', $day);
             }
         }
-
         // Filter by bulan
         if ($request->filled('bulan')) {
             $month = intval($request->input('bulan'));
@@ -38,7 +38,6 @@ class AspirasiController extends Controller
                 $query->whereMonth('created_at', $month);
             }
         }
-
         // Search by keyword (aspirasi content)
         if ($request->filled('search')) {
             $search = $request->input('search');
@@ -46,7 +45,7 @@ class AspirasiController extends Controller
         }
 
         // Get paginated results
-        $aspirasis = $query->with(['user', 'jabatan'])
+        $aspirasis = $query->with('user.jabatan')
                           ->orderBy('created_at', 'desc')
                           ->paginate(10)
                           ->withQueryString();
@@ -54,17 +53,13 @@ class AspirasiController extends Controller
         return view('aspirasi.index', compact('aspirasis'));
     }
 
-    /**
-     * Show form to create new aspirasi
-     */
+
+    //Show form to create new aspirasi
     public function create()
     {
         return view('aspirasi.create');
     }
-
-    /**
-     * Store aspirasi in database
-     */
+     //Store aspirasi in database
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -90,7 +85,6 @@ class AspirasiController extends Controller
             // Create aspirasi
             Aspirasi::create([
                 'user_id' => $userId,
-                'jabatan_id' => $user ? $user->jabatan_id : null,
                 'prioritas' => $validated['prioritas'],
                 'aspirasi' => $validated['aspirasi'],
                 'status' => 'Belum Dibaca',
@@ -107,7 +101,9 @@ class AspirasiController extends Controller
      */
     public function show($id)
     {
-        $aspirasi = Aspirasi::with(['user', 'jabatan'])->findOrFail($id);
+        $aspirasi = Aspirasi::with('user.jabatan')
+                            ->where('user_id', session('user_id'))
+                            ->findOrFail($id);
 
         // Prevent karyawan from viewing Selesai aspirasi
         if ($aspirasi->status === 'Selesai') {
@@ -117,37 +113,22 @@ class AspirasiController extends Controller
         return view('aspirasi.show', compact('aspirasi'));
     }
 
-    /**
-     * Show edit form for aspirasi
-     */
+    //Show edit form for aspirasi
     public function edit($id)
     {
-        $aspirasi = Aspirasi::with(['user', 'jabatan'])->findOrFail($id);
-
-        // Check if aspirasi belongs to current user
-        if ($aspirasi->user_id !== session('user_id')) {
-            abort(403, 'Anda tidak memiliki akses untuk mengedit aspirasi ini.');
-        }
-
+        $aspirasi = Aspirasi::with('user.jabatan')
+                            ->where('user_id', session('user_id'))
+                            ->findOrFail($id);
         // Prevent karyawan from editing Selesai aspirasi
         if ($aspirasi->status === 'Selesai') {
             abort(403, 'Aspirasi ini sudah selesai diproses dan tidak bisa diedit lagi.');
         }
-
         return view('aspirasi.edit', compact('aspirasi'));
     }
-
-    /**
-     * Update aspirasi in database
-     */
+    //Update aspirasi in database
     public function update(Request $request, $id)
     {
-        $aspirasi = Aspirasi::findOrFail($id);
-
-        // Check if aspirasi belongs to current user
-        if ($aspirasi->user_id !== session('user_id')) {
-            abort(403, 'Anda tidak memiliki akses untuk mengubah aspirasi ini.');
-        }
+        $aspirasi = Aspirasi::where('user_id', session('user_id'))->findOrFail($id);
 
         $validated = $request->validate([
             'prioritas' => 'required|in:Rendah,Sedang,Tinggi,Urgent',
@@ -158,31 +139,27 @@ class AspirasiController extends Controller
             'aspirasi.required' => 'Aspirasi harus diisi',
             'aspirasi.max' => 'Aspirasi maksimal 1000 karakter',
         ]);
-
         try {
             $aspirasi->update([
                 'prioritas' => $validated['prioritas'],
                 'aspirasi' => $validated['aspirasi'],
             ]);
 
-            return redirect()->route('aspirasi.show', $aspirasi->id)->with('success', 'Aspirasi berhasil diupdate!');
+            return redirect()
+            ->route('aspirasi.show', $aspirasi->id)
+            ->with('success', 'Aspirasi berhasil diupdate!');
         } catch (\Exception $e) {
-            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage())->withInput();
+            return back()
+            ->with('error', 'Terjadi kesalahan: ' . $e->getMessage())
+            ->withInput();
         }
     }
 
-    /**
-     * Delete aspirasi
-     */
+    //Delete aspirasi
     public function destroy($id)
     {
         try {
-            $aspirasi = Aspirasi::findOrFail($id);
-
-            // Check if aspirasi belongs to current user
-            if ($aspirasi->user_id !== session('user_id')) {
-                abort(403, 'Anda tidak memiliki akses untuk menghapus aspirasi ini.');
-            }
+            $aspirasi = Aspirasi::where('user_id', session('user_id'))->findOrFail($id);
 
             $aspirasi->delete();
             return redirect()->route('aspirasi.index')->with('success', 'Aspirasi berhasil dihapus!');

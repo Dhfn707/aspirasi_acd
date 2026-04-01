@@ -36,16 +36,27 @@ class AuthController extends Controller
             ->table('user')
             ->join('user_roles', 'user.role_id', '=', 'user_roles.id')
             ->where('user.email', $validated['email'])
-            ->first(['user.id', 'user.name', 'user.email', 'user.password', 'user.role_id', 'user_roles.name as role_name']);
+            ->first([
+                'user.id',
+                'user.name',
+                'user.email',
+                'user.password',
+                'user.role_id',
+                'user_roles.name as role_name'
+            ]);
 
         // Check if user exists
         if (!$user) {
-            return back()->withErrors(['email' => 'Email tidak terdaftar.'])->onlyInput('email');
+            return back()
+            ->withErrors(['email' => 'Email tidak terdaftar.'])
+            ->onlyInput('email');
         }
 
         // Check password
         if (!Hash::check($validated['password'], $user->password)) {
-            return back()->withErrors(['email' => 'Email atau password salah.'])->onlyInput('email');
+            return back()
+            ->withErrors(['email' => 'Email atau password salah.'])
+            ->onlyInput('email');
         }
 
         // Store user session
@@ -63,11 +74,15 @@ class AuthController extends Controller
         if ($roleName === 'admin') {
             // Admin role
             session(['user_type' => 'admin']);
-            return redirect()->route('admin.dashboard')->with('success', 'Login berhasil sebagai Admin');
+            return redirect()
+            ->route('admin.dashboard')
+            ->with('success', 'Login berhasil sebagai Admin');
         } else {
             // Karyawan role
             session(['user_type' => 'karyawan']);
-            return redirect()->route('aspirasi.index')->with('success', 'Login berhasil sebagai Karyawan');
+            return redirect()
+            ->route('aspirasi.index')
+            ->with('success', 'Login berhasil sebagai Karyawan');
         }
     }
 

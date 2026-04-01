@@ -29,9 +29,9 @@
                             <span class="nav-link">{{ session('user_name') ?? 'User' }}</span>
                         </li>
                         <li class="nav-item">
-                            <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                            <form action="{{ route('logout') }}" method="POST" class="d-inline" id="logoutForm">
                                 @csrf
-                                <button type="submit" class="nav-link btn btn-link" style="color: white; text-decoration: none;">
+                                <button type="submit" class="nav-link btn btn-link" style="color: white; text-decoration: none;" onclick="confirmLogout(event)">
                                     <i class="fas fa-sign-out-alt"></i> Logout
                                 </button>
                             </form>
@@ -65,6 +65,25 @@
         </div>
     </div>
 
+    <!-- Modal Konfirmasi Reusable -->
+    <div class="modal fade" id="confirmationModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmationTitle">Konfirmasi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirmationMessage">Apakah Anda yakin?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="confirmationCancelBtn" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" id="confirmationConfirmBtn">Konfirmasi</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Footer -->
     <footer class="app-footer">
         <div class="container-fluid px-4">
@@ -74,6 +93,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/confirmation.js') }}"></script>
     @yield('scripts')
 </body>
 </html>

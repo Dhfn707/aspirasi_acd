@@ -79,7 +79,7 @@ class User extends Authenticatable
      */
     public function jabatan()
     {
-        return $this->belongsTo(Jabatan::class, 'jabatan_id');
+        return $this->belongsTo(JabatanAbsen::class, 'jabatan_id');
     }
 
     /**

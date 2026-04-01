@@ -13,7 +13,9 @@ class KaryawanMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (session('user_type') !== 'karyawan') {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu untuk mengakses halaman ini.');
+            return redirect()
+            ->route('login')
+            ->with('error', 'Silakan login terlebih dahulu untuk mengakses halaman ini.');
         }
 
         return $next($request);

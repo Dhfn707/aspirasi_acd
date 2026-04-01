@@ -44,7 +44,6 @@ class TestCreateAspirationData extends Command
         try {
             $aspirasi = Aspirasi::create([
                 'user_id' => $user->id,
-                'jabatan_id' => $user->jabatan_id ?? 1,
                 'prioritas' => 'Tinggi',
                 'aspirasi' => 'Ini adalah aspirasi test dari user ' . $user->name . ' di database terpisah',
                 'status' => 'Belum Dibaca',

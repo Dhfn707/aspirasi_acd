@@ -204,7 +204,7 @@
                                             <strong>{{ $aspirasi->user->name ?? 'N/A' }}</strong><br>
                                             <small class="text-muted">{{ $aspirasi->user->email ?? 'N/A' }}</small><br>
                                             <small class="text-muted">
-                                                <i class="fas fa-briefcase"></i> {{ $aspirasi->jabatan->nama ?? 'N/A' }}
+                                                <i class="fas fa-briefcase"></i> {{ $aspirasi->user->jabatan->nama ?? 'N/A' }}
                                             </small>
                                         </td>
                                         <td>
@@ -256,7 +256,7 @@
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-sm btn-outline-danger"
                                                             title="Hapus"
-                                                            onclick="return confirm('Yakin ingin menghapus aspirasi ini?')">
+                                                            onclick="confirmDelete(event, '{{ $aspirasi->judul }}')">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </form>

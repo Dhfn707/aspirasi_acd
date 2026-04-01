@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Role;
-use App\Models\Jabatan;
+use App\Models\JabatanAbsen;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -22,10 +22,10 @@ class UserSeeder extends Seeder
         $karyawanRole = Role::firstOrCreate(['name' => 'karyawan']);
 
         // Get or create positions
-        $managerPos = Jabatan::firstOrCreate(['name' => 'Manager']);
-        $supervisorPos = Jabatan::firstOrCreate(['name' => 'Supervisor']);
-        $staffPos = Jabatan::firstOrCreate(['name' => 'Staff']);
-        $internPos = Jabatan::firstOrCreate(['name' => 'Intern']);
+        $managerPos = JabatanAbsen::firstOrCreate(['nama' => 'Manager']);
+        $supervisorPos = JabatanAbsen::firstOrCreate(['nama' => 'Supervisor']);
+        $staffPos = JabatanAbsen::firstOrCreate(['nama' => 'Staff']);
+        $internPos = JabatanAbsen::firstOrCreate(['nama' => 'Intern']);
 
         // Create Admin User
         User::create([

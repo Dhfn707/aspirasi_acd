@@ -13,7 +13,9 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next)
     {
         if (session('user_type') !== 'admin') {
-            return redirect()->route('login')->with('error', 'Akses ditolak. Anda harus login sebagai admin.');
+            return redirect()
+            ->route('login')
+            ->with('error', 'Akses ditolak. Anda harus login sebagai admin.');
         }
 
         return $next($request);

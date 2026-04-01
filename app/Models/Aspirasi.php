@@ -11,7 +11,6 @@ class Aspirasi extends Model
 
     protected $fillable = [
         'user_id',
-        'jabatan_id',
         'prioritas',
         'aspirasi',
         'status',
@@ -21,11 +20,6 @@ class Aspirasi extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
-    }
-
-    public function jabatan()
-    {
-        return $this->belongsTo(JabatanAbsen::class, 'jabatan_id', 'id');
     }
 
     protected $casts = [

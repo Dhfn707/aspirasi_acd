@@ -15,11 +15,16 @@ class CreateAspirasisTable extends Migration
     {
         Schema::create('aspirasis', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->comment('References user table from absen_karyawan database');
-            $table->unsignedBigInteger('jabatan_id')->nullable()->comment('References jabatan table from absen_karyawan database');
-            $table->enum('prioritas', ['Rendah', 'Sedang', 'Tinggi', 'Urgent'])->default('Sedang');
+            $table
+            ->unsignedBigInteger('user_id')
+            ->comment('References user table from absen_karyawan database');
+            $table
+            ->enum('prioritas', ['Rendah', 'Sedang', 'Tinggi', 'Urgent'])
+            ->default('Sedang');
             $table->text('aspirasi');
-            $table->enum('status', ['Belum Dibaca', 'Dibaca', 'Ditanggapi', 'Selesai'])->default('Belum Dibaca');
+            $table
+            ->enum('status', ['Belum Dibaca', 'Dibaca', 'Ditanggapi', 'Selesai'])
+            ->default('Belum Dibaca');
             $table->text('tanggapan_admin')->nullable();
             $table->timestamps();
         });

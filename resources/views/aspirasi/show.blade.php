@@ -16,7 +16,7 @@
             @csrf
             @method('DELETE')
             <button type="submit" class="btn btn-danger btn-sm"
-                    onclick="return confirm('Yakin ingin menghapus aspirasi ini?')">
+                    onclick="confirmDelete(event, '{{ $aspirasi->judul }}')">
                 <i class="fas fa-trash"></i> Hapus
             </button>
         </form>
@@ -56,7 +56,7 @@
                             <label class="text-muted small fw-bold">
                                 <i class="fas fa-briefcase"></i> Jabatan
                             </label>
-                            <p class="fs-5 fw-bold mb-0">{{ $aspirasi->jabatan->nama ?? 'N/A' }}</p>
+                            <p class="fs-5 fw-bold mb-0">{{ $aspirasi->user->jabatan->nama ?? 'N/A' }}</p>
                         </div>
                         <div class="col-md-6">
                             <label class="text-muted small fw-bold">
