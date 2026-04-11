@@ -76,19 +76,15 @@ class AspirasiController extends Controller
             // Get user data from session
             $userId = session('user_id');
 
-            // Get user's jabatan from user table in absen_karyawan database
-            $user = DB::connection('absen_karyawan')
-                ->table('user')
-                ->where('id', $userId)
-                ->first(['jabatan_id']);
-
             // Create aspirasi
-            Aspirasi::create([
+            $aspirasi = Aspirasi::create([
                 'user_id' => $userId,
                 'prioritas' => $validated['prioritas'],
                 'aspirasi' => $validated['aspirasi'],
                 'status' => 'Belum Dibaca',
             ]);
+
+
 
             return back()->with('success', 'Aspirasi berhasil disimpan!');
         } catch (\Exception $e) {

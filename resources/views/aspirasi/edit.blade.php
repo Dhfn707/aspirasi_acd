@@ -127,7 +127,7 @@
                         <!-- Form Actions -->
                         <div class="d-flex gap-2 mt-4">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Simpan Perubahan
+                                <i class="fas fa-save"></i> Simpan 
                             </button>
                             <a href="{{ route('aspirasi.show', $aspirasi->id) }}" class="btn btn-secondary">
                                 <i class="fas fa-times"></i> Batal

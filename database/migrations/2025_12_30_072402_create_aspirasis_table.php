@@ -6,11 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateAspirasisTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+    //Run the migrations.
     public function up()
     {
         Schema::create('aspirasis', function (Blueprint $table) {
@@ -30,11 +26,7 @@ class CreateAspirasisTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
+    //Reverse the migrations.
     public function down()
     {
         Schema::dropIfExists('aspirasis');
